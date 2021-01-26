@@ -1,19 +1,9 @@
-==========
-videocheck
-==========
-
-
-.. image:: https://img.shields.io/pypi/v/videocheck.svg
-        :target: https://pypi.python.org/pypi/videocheck
-
-Automated tool to check consistency of your video library.
-
-
+# VideoCheck
+* Automated tool to check consistency of your video library.
 * Free software: MIT license
+* PRs are welcome
 
-
-Usage
---------
+## Usage
 
 ```bash
 videocheck [OPTIONS] [PATHS]...
@@ -31,8 +21,7 @@ Options:
   --help                      Show this message and exit.
 ```
 
-Output Example
---------
+## Output Example
 ```bash
 🏁 2 files to check
 ✅ ~/Videos/ok.mp4
