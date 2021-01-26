@@ -1,11 +1,10 @@
 """Main module."""
 
 from tqdm import tqdm
-import sys
 import os
 from pathlib import Path
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
 from time import sleep
 
 
@@ -30,7 +29,6 @@ def videocheck(
     def report():
         total = videochecked.shape[0]
         errors = videochecked[videochecked.errors.str.len() > 0].shape[0]
-        correct = total - errors
 
         print("#"*30)
         print("SCAN DONE")
@@ -66,7 +64,7 @@ def videocheck(
     if Path(output_file).is_file():
         videochecked = pd.read_csv(output_file, index_col=None)
         files = [file for file in files if str(
-            file.absolute()) in videochecked.file]
+            file.absolute()) not in videochecked.file]
     else:
         videochecked = pd.DataFrame(columns=["file", "errors"])
 
