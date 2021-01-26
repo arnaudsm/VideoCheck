@@ -1,7 +1,14 @@
 # VideoCheck
-* Automated tool to check consistency of your video library.
-* Free software: MIT license
-* PRs are welcome
+Automated tool to check consistency of your video library.
+
+
+## Installation
+* Clone this repo and `pip install .`
+
+or
+
+* `pip install videocheck`
+Check us on [PyPI](https://pypi.org/project/videocheck/) !
 
 ## Usage
 
