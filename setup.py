@@ -4,33 +4,19 @@
 
 from setuptools import setup, find_packages
 
-with open('README.rst') as readme_file:
-    readme = readme_file.read()
-
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
-
 requirements = ['Click>=7.0', 'pandas', 'tqdm']
 
 setup_requirements = ['pytest-runner', ]
 
 test_requirements = ['pytest>=3', ]
 
+with open("README.MD", "r") as fh:
+    long_description = fh.read()
+
 setup(
     author="Arnaud de Saint Meloir",
     author_email='arnaud.desaintmeloir@gmail.com',
     python_requires='>=3.5',
-    classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-    ],
     description="Automated tool to check consistency of your video library.",
     entry_points={
         'console_scripts': [
@@ -39,7 +25,7 @@ setup(
     },
     install_requires=requirements,
     license="MIT license",
-    long_description=readme + '\n\n' + history,
+    long_description=long_description,
     include_package_data=True,
     keywords='videocheck',
     name='videocheck',
