@@ -29,7 +29,7 @@ def videocheck(
 
     def report():
         total = videochecked.shape[0]
-        errors = videochecked.errors.dropna().shape[0]
+        errors = videochecked[videochecked.errors.str.len() > 0].shape[0]
         correct = total - errors
 
         print("#"*30)
