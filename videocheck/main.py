@@ -60,6 +60,7 @@ def videocheck(
 
     if len(files) == 0:
         print("🚨 No file detected. Provide a path with video files, or add new extensions using --extensions")
+        return
 
     if Path(output_file).is_file():
         videochecked = pd.read_csv(output_file, index_col=0, dtype={'corrupted': "bool"})
