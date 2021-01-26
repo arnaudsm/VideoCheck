@@ -36,7 +36,7 @@ def test_cli_args():
     assert "OVER ✅" in str(result.output)
     assert result.exit_code == 0
 
-    csv = pd.read_csv("tests/out.csv", index_col=None)
+    csv = pd.read_csv("tests/out.csv", index_col=0)
     assert csv.shape == (2, 2)
     assert csv.errors.dropna().shape[0] == 1
 

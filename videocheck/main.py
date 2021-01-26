@@ -62,42 +62,39 @@ def videocheck(
         print("🚨 No file detected. Provide a path with video files, or add new extensions using --extensions")
 
     if Path(output_file).is_file():
-        videochecked = pd.read_csv(output_file, index_col=None)
-        files = [file for file in files if str(
-            file.absolute()) not in videochecked.file]
+        videochecked = pd.read_csv(output_file, index_col=0, dtype={'corrupted': "bool"})
     else:
-        videochecked = pd.DataFrame(columns=["file", "errors"])
+        videochecked = pd.DataFrame(columns=["errors", "corrupted"], index=["file"]).dropna()
+
+    files = [str(file.absolute()) for file in files if str(file.absolute()) not in videochecked.index]
+    videochecked = videochecked.append(pd.DataFrame(index=files))
+    files = videochecked[videochecked.corrupted.isnull()].index
 
     if len(files) == 0:
         report()
         return
 
     print("🏁", len(files), "files to check")
-
-    for file in tqdm(files):
+    pbar = tqdm(
+        files,
+        total=videochecked.shape[0],
+        initial=videochecked.shape[0]-len(files)
+    )
+    for file in pbar:
         if forbidden_hours:
             check_time()
-        print(file.absolute(), end="")
-
+        pbar.set_description(file)
         errors = os.popen(
             'ffmpeg -loglevel error -threads {threads} -i "{file}" -f null - 2>&1'.format(
                 file=file,
                 threads=threads,
             )
         ).read().strip()
-
-        print(
-            "\r",
-            "✅" if len(errors) == 0 else "❌",
-            " ",
-            file.absolute(),
-            sep=""
-        )
-
-        videochecked = videochecked.append({
-            "file": str(file.absolute()),
-            "errors": errors
-        }, ignore_index=True)
-        videochecked.to_csv(output_file, index=None)
-
+        corrupted = len(errors) > 0
+        videochecked.loc[file] = pd.Series({
+            "errors": errors,
+            "corrupted": corrupted,
+        })
+        pbar.set_postfix(errors=videochecked[videochecked.errors.str.len() > 0].shape[0])
+        videochecked.to_csv(output_file, index="file")
     report()
