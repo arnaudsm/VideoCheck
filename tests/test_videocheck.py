@@ -6,7 +6,6 @@ import pytest
 
 from click.testing import CliRunner
 
-from videocheck import main
 from videocheck import cli
 import pandas as pd
 from pathlib import Path
@@ -22,7 +21,6 @@ def test_cli():
     assert result.exit_code == 0
 
     Path("videochecked.csv").unlink()
-
 
 
 def test_cli_args():
