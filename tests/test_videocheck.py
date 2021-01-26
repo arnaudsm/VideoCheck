@@ -6,32 +6,40 @@ import pytest
 
 from click.testing import CliRunner
 
-from videocheck import videocheck
+from videocheck import main
 from videocheck import cli
+import pandas as pd
+from pathlib import Path
 
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
-
-
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
-
-
-def test_command_line_interface():
+def test_cli():
     """Test the CLI."""
     runner = CliRunner()
     result = runner.invoke(cli.main)
+
+    assert "1/2 faulty videos detected 🚨" in result.output
+    assert "OVER ✅" in str(result.output)
     assert result.exit_code == 0
-    assert 'videocheck.cli.main' in result.output
-    help_result = runner.invoke(cli.main, ['--help'])
-    assert help_result.exit_code == 0
-    assert '--help  Show this message and exit.' in help_result.output
+
+    Path("videochecked.csv").unlink()
+
+
+
+def test_cli_args():
+    """Test the CLI arguments."""
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        "-o tests/out.csv -t 2 -e mp4,avi".split(" ")
+    )
+
+    print(result.output)
+    assert "1/2 faulty videos detected 🚨" in result.output
+    assert "OVER ✅" in str(result.output)
+    assert result.exit_code == 0
+
+    csv = pd.read_csv("tests/out.csv", index_col=None)
+    assert csv.shape == (2, 2)
+    assert csv.errors.dropna().shape[0] == 1
+
+    Path("tests/out.csv").unlink()
