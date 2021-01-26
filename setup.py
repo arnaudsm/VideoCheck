@@ -37,4 +37,5 @@ setup(
     url='https://github.com/arnaudsm/videocheck',
     version='0.1.0',
     zip_safe=True,
+    include_package_data=True,
 )
