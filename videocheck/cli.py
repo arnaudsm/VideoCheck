@@ -6,13 +6,13 @@ from videocheck.main import videocheck
 
 @click.command()
 @click.argument('paths', type=click.Path(exists=True), nargs=-1)
-@click.option('--output', '-o', type=click.Path(dir_okay=False), default='./videochecked.csv', help='help')
-@click.option('--extensions', '-e', default="avi,mkv,mp4,wmv,mpg", help='help')
-@click.option('--forbidden-hours', '-f', help='help')
-@click.option('--threads', '-t', default=4, help='help')
-@click.option('--delete', '-d', is_flag=True, default=False, help='help')
+@click.option('--output', '-o', type=click.Path(dir_okay=False), default='./videochecked.csv', help='Output file path (csv file)')
+@click.option('--extensions', '-e', default="avi,mkv,mp4,wmv,mpg", help='Video extensions to scan')
+@click.option('--forbidden-hours', '-f', help='Forbidden hours (useful for multi-day scans), example: 18-23 to forbid scanning between 18h and 23h')
+@click.option('--threads', '-t', default=4, help='CPU threads for FFmpeg')
+@click.option('--delete', '-d', is_flag=True, default=False, help='Delete corrupt files after scanning')
 def main(paths, output, extensions, delete, forbidden_hours, threads):
-    """Console script for videocheck."""
+    """Automated tool to check consistency of your video library."""
     extensions = extensions.split(",")
 
     if forbidden_hours:
