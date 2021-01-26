@@ -50,7 +50,7 @@ def videocheck(
     def delete_files():
         print("#"*30)
         print("DELETING")
-        files = list(videochecked[~videochecked.errors.isnull()].file)
+        files = list(videochecked[videochecked.errors.str.len() > 0].file)
 
         for file in tqdm(files):
             Path(file).unlink(missing_ok=False)
