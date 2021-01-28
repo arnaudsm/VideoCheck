@@ -63,7 +63,8 @@ def videocheck(
         return
 
     if Path(output_file).is_file():
-        videochecked = pd.read_csv(output_file, index_col=0, dtype={'corrupted': "bool"})
+        videochecked = pd.read_csv(output_file, index_col=0).dropna()
+        videochecked["corrupted"] = videochecked["corrupted"].astype(bool)
     else:
         videochecked = pd.DataFrame(columns=["errors", "corrupted"], index=["file"]).dropna()
 
